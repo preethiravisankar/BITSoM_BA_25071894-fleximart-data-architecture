@@ -2,6 +2,7 @@
 # Importing libraries
 # =================================================
 import pandas as pd
+from pathlib import Path
 import re
 from sqlalchemy import create_engine, text
 import datetime
@@ -14,12 +15,65 @@ DB_URI = "mysql+pymysql://root:root@localhost/fleximart"
 engine = create_engine(DB_URI)
 
 # =================================================
+# CREATE TABLES IN MYSQL DB WITH THE SCHEMA GIVEN
+# =================================================
+create_tables_sql = """
+CREATE TABLE IF NOT EXISTS customers (
+    customer_id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    phone VARCHAR(20),
+    city VARCHAR(50),
+    registration_date DATE
+);
+
+CREATE TABLE IF NOT EXISTS products (
+    product_id INT PRIMARY KEY AUTO_INCREMENT,
+    product_name VARCHAR(100) NOT NULL,
+    category VARCHAR(50) NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    stock_quantity INT DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS orders (
+    order_id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_id INT NOT NULL,
+    order_date DATE NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    status VARCHAR(20) DEFAULT 'Pending',
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+);
+
+CREATE TABLE IF NOT EXISTS order_items (
+    order_item_id INT PRIMARY KEY AUTO_INCREMENT,
+    order_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL,
+    subtotal DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+"""
+
+# Execute SQL
+with engine.begin() as conn:
+    for stmt in create_tables_sql.split(";"):
+        if stmt.strip():
+            conn.execute(text(stmt))
+
+print("Tables created successfully")
+
+# =================================================
 # EXTRACT DATA
 # =================================================
+BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = BASE_DIR.parent / "data"
 
-customers_df = pd.read_csv("../data/customers_raw.csv")
-products_df = pd.read_csv("../data/products_raw.csv")
-sales_df = pd.read_csv("../data/sales_raw.csv")
+customers_df = pd.read_csv(DATA_DIR / "customers_raw.csv")
+products_df = pd.read_csv(DATA_DIR / "products_raw.csv")
+sales_df = pd.read_csv(DATA_DIR / "sales_raw.csv")
 
 # Normalize column names
 customers_df.columns = customers_df.columns.str.strip().str.lower()
@@ -228,7 +282,7 @@ sales_df['transaction_date'] = pd.to_datetime(sales_df['transaction_date'], form
 
 # 2. If you need the column to stay as a string in 'YYYY-MM-DD' format:
 sales_df['transaction_date'] = sales_df['transaction_date'].dt.strftime('%Y-%m-%d')
-print(sales_df)
+#print(sales_df)
 
 # 3. Store the counts in variables
 # .count() only counts non-null/non-NaT values
@@ -257,7 +311,7 @@ customers_df['registration_date'] = pd.to_datetime(customers_df['registration_da
 
 # 2. If you need the column to stay as a string in 'YYYY-MM-DD' format:
 customers_df['registration_date'] = customers_df['registration_date'].dt.strftime('%Y-%m-%d')
-print(sales_df)
+#print(sales_df)
 
 # 3. Store the counts in variables
 # .count() only counts non-null/non-NaT values
