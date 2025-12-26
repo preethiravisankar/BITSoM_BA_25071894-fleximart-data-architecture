@@ -1,0 +1,69 @@
+[2025-12-24 20:52:28]
+Duplicate removal for Customers data
+Rows before: 26
+Rows after: 25
+Duplicates removed: 1
+----------------------------------------
+[2025-12-24 20:52:28] Duplicate removal for Sales data
+Rows before: 41
+Rows after: 40
+Duplicates removed: 1
+----------------------------------------
+[2025-12-24 20:52:28] Dropped invalid sales records
+Reason: A sales record without connection to customers is not usedful in analysis. Also the rows with missing customer_d has status as Pending. So these rows does not contribute to revenue as well. 
+Missing customer_id rows: 3
+Total rows dropped based on missing customer_ids: 3
+----------------------------------------
+[2025-12-24 20:52:28] Handlng missing product_ids in sales data
+Based on the product price,  the product_id is taken from products data. (this was unique in this case)
+Missing product_id rows: 2
+Missing product_ids after replacement: 0
+----------------------------------------
+[2025-12-24 20:52:28] Missing email handling (customers_csv)
+Column: email
+Missing values found: 5
+Action taken: Filled with 'unknown_customerid@dummy.com'
+----------------------------------------
+[2025-12-24 20:52:28] Missing price handling (products_csv)
+Column: price
+Strategy: Category-wise median calculation
+Missing values handled: 3
+----------------------------------------
+[2025-12-24 20:52:28] Missing stock value handling (products_csv)
+Column: stock_quantity
+Missing before: 1
+Action: Filled with 0 (assumed out of stock)
+
+----------------------------------------
+[2025-12-24 20:52:28] Standardizing dates in sales data
+Column: transaction_date
+Strategy: convert to YYY-MM-DD format
+Successfully handled records: 37
+Invalid dates (failed): 0
+----------------------------------------
+[2025-12-24 20:52:28] Standardizing dates in customer data
+Column: registration_date
+Strategy: convert to YYY-MM-DD format
+Successfully handled records: 25
+Invalid dates (failed): 0
+----------------------------------------
+[2025-12-24 20:52:28] Customers table load
+Table: customers
+Rows inserted: 25
+Action taken: Appended records from customers_df
+----------------------------------------
+[2025-12-24 20:52:28] Products table load
+Table: products
+Rows inserted: 20
+Action taken: Appended records from products_df
+----------------------------------------
+[2025-12-24 20:52:28] Orders table load
+Table: orders
+Rows inserted: 37
+Action taken: Appended records from sales dataset
+----------------------------------------
+[2025-12-24 20:52:28] Order Items table load
+Table: order_items
+Rows inserted: 37
+Action taken: Appended records from sales dataset
+----------------------------------------
