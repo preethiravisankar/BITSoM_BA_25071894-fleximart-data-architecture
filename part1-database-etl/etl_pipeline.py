@@ -11,7 +11,14 @@ import datetime
 # DATABASE CONFIG
 # =================================================
 
-DB_URI = "mysql+pymysql://root:root@localhost/fleximart"
+import getpass
+
+user = input("Enter DB username: ")
+password = getpass.getpass("Enter DB password: ")
+
+DB_URI = f"mysql+pymysql://{user}:{password}@localhost/fleximart"
+
+#DB_URI = "mysql+pymysql://root:root@localhost/fleximart"
 engine = create_engine(DB_URI)
 
 # =================================================
@@ -618,3 +625,4 @@ except Exception as e:
         file.write("Error type: UnexpectedError\n")
         file.write(f"Error message: {str(e)}\n")
         file.write("-" * 40 + "\n")
+
