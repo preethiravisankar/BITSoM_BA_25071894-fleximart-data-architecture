@@ -104,9 +104,9 @@ sales_df = sales_df.reset_index(drop=True)
 
 # Current timestamp
 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
+report_path = BASE_DIR / "data_quality_report.txt"
 # Write to text file (append mode)
-with open("data_quality_report.txt", "w") as file:
+with open(report_path, "w") as file:
     file.write(f"[{timestamp}]\n")
     file.write(f"Duplicate removal for Customers data\n")
     file.write(f"Rows before: {rows_before_customers}\n")
@@ -137,7 +137,7 @@ rows_dropped = rows_before - rows_after
 #Note it in data_quality_report
 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-with open("data_quality_report.txt", "a") as file:
+with open(report_path, "a") as file:
     file.write(f"[{timestamp}] Dropped invalid sales records\n")
     file.write("Reason: A sales record without connection to customers is not usedful in analysis. Also the rows with missing customer_d has status as Pending. So these rows does not contribute to revenue as well. \n")
     file.write(f"Missing customer_id rows: {missing_customer}\n")
@@ -162,7 +162,7 @@ missing_product_after = sales_df["product_id"].isna().sum()
 #Note it in data_quality_report
 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-with open("data_quality_report.txt", "a") as file:
+with open(report_path, "a") as file:
     file.write(f"[{timestamp}] Handlng missing product_ids in sales data\n")
     file.write("Based on the product price,  the product_id is taken from products data. (this was unique in this case)\n")
     file.write(f"Missing product_id rows: {missing_product}\n")
@@ -185,7 +185,7 @@ after = customers_df.shape[0]
 #note changes in data_quality_report text file
 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-with open("data_quality_report.txt", "a") as file:
+with open(report_path, "a") as file:
     file.write(f"[{timestamp}] Missing email handling (customers_csv)\n")
     file.write("Column: email\n")
     file.write(f"Missing values found: {missing_email_count}\n")
@@ -229,7 +229,7 @@ products_df["price"] = products_df["price"].fillna(
 
 #Note it in the data_quality_report 
 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-with open("data_quality_report.txt", "a") as file:
+with open(report_path, "a") as file:
     file.write(f"[{timestamp}] Missing price handling (products_csv)\n")
     file.write("Column: price\n")
     file.write("Strategy: Category-wise median calculation\n")
@@ -244,7 +244,7 @@ stock_missing_after = products_df["stock_quantity"].isna().sum()
 
 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-with open("data_quality_report.txt", "a") as file:
+with open(report_path, "a") as file:
     file.write(f"[{timestamp}] Missing stock value handling (products_csv)\n")
 
     file.write("Column: stock_quantity\n")
@@ -291,7 +291,7 @@ failed_count = sales_df['transaction_date'].isna().sum()
 
 #Note it in the data_quality_report 
 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-with open("data_quality_report.txt", "a") as file:
+with open(report_path, "a") as file:
     file.write(f"[{timestamp}] Standardizing dates in sales data\n")
     file.write("Column: transaction_date\n")
     file.write("Strategy: convert to YYY-MM-DD format\n")
@@ -320,7 +320,7 @@ failed_count = customers_df['registration_date'].isna().sum()
 
 #Note it in the data_quality_report 
 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-with open("data_quality_report.txt", "a") as file:
+with open(report_path, "a") as file:
     file.write(f"[{timestamp}] Standardizing dates in customer data\n")
     file.write("Column: registration_date\n")
     file.write("Strategy: convert to YYY-MM-DD format\n")
@@ -366,7 +366,7 @@ try:
 
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
-    with open("data_quality_report.txt", "a") as file:
+    with open(report_path, "a") as file:
         file.write(f"[{timestamp}] Customers table load\n")
         file.write("Table: customers\n")
         file.write(f"Rows inserted: {rows_inserted}\n")
@@ -374,7 +374,7 @@ try:
         file.write("-" * 40 + "\n")
 
 except IntegrityError as e:
-    with open("data_quality_report.txt", "a") as file:
+    with open(report_path, "a") as file:
         file.write(f"[{timestamp}] Customers table load FAILED\n")
         file.write("Error type: IntegrityError\n")
         file.write(f"Error message: {str(e)}\n")
@@ -382,7 +382,7 @@ except IntegrityError as e:
         file.write("-" * 40 + "\n")
 
 except SQLAlchemyError as e:
-    with open("data_quality_report.txt", "a") as file:
+    with open(report_path, "a") as file:
         file.write(f"[{timestamp}] Customers table load FAILED\n")
         file.write("Error type: SQLAlchemyError\n")
         file.write(f"Error message: {str(e)}\n")
@@ -390,7 +390,7 @@ except SQLAlchemyError as e:
         file.write("-" * 40 + "\n")
 
 except Exception as e:
-    with open("data_quality_report.txt", "a") as file:
+    with open(report_path, "a") as file:
         file.write(f"[{timestamp}] Customers table load FAILED\n")
         file.write("Error type: UnexpectedError\n")
         file.write(f"Error message: {str(e)}\n")
@@ -429,7 +429,7 @@ try:
 
     # SUCCESS log
     
-    with open("data_quality_report.txt", "a") as file:
+    with open(report_path, "a") as file:
         file.write(f"[{timestamp}] Products table load\n")
         file.write("Table: products\n")
         file.write(f"Rows inserted: {rows_inserted}\n")
@@ -437,7 +437,7 @@ try:
         file.write("-" * 40 + "\n")
 
 except IntegrityError as e:
-    with open("data_quality_report.txt", "a") as file:
+    with open(report_path, "a") as file:
         file.write(f"[{timestamp}] Products table load FAILED\n")
         file.write("Error type: IntegrityError\n")
         file.write(f"Error message: {str(e)}\n")
@@ -445,7 +445,7 @@ except IntegrityError as e:
         file.write("-" * 40 + "\n")
 
 except SQLAlchemyError as e:
-    with open("data_quality_report.txt", "a") as file:
+    with open(report_path, "a") as file:
         file.write(f"[{timestamp}] Products table load FAILED\n")
         file.write("Error type: SQLAlchemyError\n")
         file.write(f"Error message: {str(e)}\n")
@@ -453,7 +453,7 @@ except SQLAlchemyError as e:
         file.write("-" * 40 + "\n")
 
 except Exception as e:
-    with open("data_quality_report.txt", "a") as file:
+    with open(report_path, "a") as file:
         file.write(f"[{timestamp}] Products table load FAILED\n")
         file.write("Error type: UnexpectedError\n")
         file.write(f"Error message: {str(e)}\n")
@@ -504,7 +504,7 @@ try:
 
     # SUCCESS log
    
-    with open("data_quality_report.txt", "a") as file:
+    with open(report_path, "a") as file:
         file.write(f"[{timestamp}] Orders table load\n")
         file.write("Table: orders\n")
         file.write(f"Rows inserted: {rows_inserted}\n")
@@ -512,7 +512,7 @@ try:
         file.write("-" * 40 + "\n")
 
 except IntegrityError as e:
-    with open("data_quality_report.txt", "a") as file:
+    with open(report_path, "a") as file:
         file.write(f"[{timestamp}] Orders table load FAILED\n")
         file.write("Error type: IntegrityError\n")
         file.write(f"Error message: {str(e)}\n")
@@ -520,7 +520,7 @@ except IntegrityError as e:
         file.write("-" * 40 + "\n")
 
 except SQLAlchemyError as e:
-    with open("data_quality_report.txt", "a") as file:
+    with open(report_path, "a") as file:
         file.write(f"[{timestamp}] Orders table load FAILED\n")
         file.write("Error type: SQLAlchemyError\n")
         file.write(f"Error message: {str(e)}\n")
@@ -528,7 +528,7 @@ except SQLAlchemyError as e:
         file.write("-" * 40 + "\n")
 
 except Exception as e:
-    with open("data_quality_report.txt", "a") as file:
+    with open(report_path, "a") as file:
         file.write(f"[{timestamp}] Orders table load FAILED\n")
         file.write("Error type: UnexpectedError\n")
         file.write(f"Error message: {str(e)}\n")
@@ -589,7 +589,7 @@ try:
 
     # SUCCESS log
    
-    with open("data_quality_report.txt", "a") as file:
+    with open(report_path, "a") as file:
         file.write(f"[{timestamp}] Order Items table load\n")
         file.write("Table: order_items\n")
         file.write(f"Rows inserted: {rows_inserted}\n")
@@ -597,7 +597,7 @@ try:
         file.write("-" * 40 + "\n")
 
 except IntegrityError as e:
-    with open("data_quality_report.txt", "a") as file:
+    with open(report_path, "a") as file:
         file.write(f"[{timestamp}] Orders table load FAILED\n")
         file.write("Error type: IntegrityError\n")
         file.write(f"Error message: {str(e)}\n")
@@ -605,7 +605,7 @@ except IntegrityError as e:
         file.write("-" * 40 + "\n")
 
 except SQLAlchemyError as e:
-    with open("data_quality_report.txt", "a") as file:
+    with open(report_path, "a") as file:
         file.write(f"[{timestamp}] Orders table load FAILED\n")
         file.write("Error type: SQLAlchemyError\n")
         file.write(f"Error message: {str(e)}\n")
@@ -613,7 +613,7 @@ except SQLAlchemyError as e:
         file.write("-" * 40 + "\n")
 
 except Exception as e:
-    with open("data_quality_report.txt", "a") as file:
+    with open(report_path, "a") as file:
         file.write(f"[{timestamp}] Orders table load FAILED\n")
         file.write("Error type: UnexpectedError\n")
         file.write(f"Error message: {str(e)}\n")
