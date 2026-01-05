@@ -3,7 +3,7 @@
 **Student Name:** Preethi Ravisankar  
 **Student ID:** BITSoM_BA_25071894  
 **Email:** preethiravisankar@gmail.com  
-**Date:** 29.12.2025  
+**Date:** 06.01.2026  
 
 ## Project Overview
 
@@ -59,9 +59,9 @@ mongosh < part2-nosql/mongodb_operations.js
 
 ## Key Learnings
 
-I gained hands-on experience in handling raw data and loading clean data into relational database system. Also, to handle flexible data with varied attributes in NoSQL database (MongoDB). Gained insight into how different data storage systems (RDBMS, NoSQL) work together in a real-world analytics pipeline.
+I gained hands-on experience in handling raw data and loading clean data into a relational database system. Also, to handle flexible data with varied attributes in a NoSQL database (MongoDB). Gained insight into how different data storage systems (RDBMS, NoSQL) work together in a real-world analytics pipeline.
 
 ## Challenges Faced
 
 1. The customer and product datasets used character-based primary keys (such as C001 and P001), while the database tables were designed with auto-incremented integer primary keys. The sales dataset referenced these character-based customer_id and product_id values. To handle this mismatch, a temporary mapping was created to link the dataset IDs with the corresponding auto-generated database IDs during data insertion.
-2. To handle rows with missing product_ids in the sales dataset, I matched the price values in the sales data with the corresponding prices in the products dataset to identify the correct product_ids. This approach was feasible because each product had a unique price and the dataset size was small.
+2. To handle rows with missing product_ids in the sales dataset, I matched the price values in the sales data with the corresponding prices in the products dataset to identify the correct product_ids. This approach was feasible because each product had a unique price, and the dataset size was small.
