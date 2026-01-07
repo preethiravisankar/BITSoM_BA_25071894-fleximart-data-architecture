@@ -1,6 +1,6 @@
 USE fleximart_dw;
 -- select * from fact_sales;
--- Query 1: Monthly Sales Drill-Down
+-- Query 1: Monthly Sales Drill-Down 
 -- Business Scenario: The CEO wants to see sales performance broken down by time periods. Start with yearly total, then quarterly, then monthly sales for 2024.
 -- Demonstrates: Drill-down from Year to Quarter to Month
 
