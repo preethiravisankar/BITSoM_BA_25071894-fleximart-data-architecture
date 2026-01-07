@@ -2,7 +2,7 @@
 
 ## 1. Section 1: Schema Overview
 
-### Describing the star schema
+### Describing star schema
 
 **FACT TABLE: fact_sales**  
 Grain: One row per product per order line item  
@@ -81,3 +81,4 @@ fact_sales:
 dim_date: {date_key: 20261226, full_date: '2026-12-26', day_of_week: 4, day_of_month:26, month:12, month_name: 'December', quarter: 'Q3', year: 2026, is_weekend: false }  
 dim_product: {product_key: 10, product_name: 'Cotton T Shirt', category: 'Fashion', sub-category: 'Women-Tops', unit_price: 300}  
 dim_customer: {customer_key: 16, customer_name: 'Preethi Ravi'', city: 'Chennai', state: 'Tamilnadu', customer_segment: 'premium'}
+
