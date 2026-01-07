@@ -22,7 +22,7 @@ DB_URI = f"mysql+pymysql://{user}:{password}@localhost/fleximart"
 engine = create_engine(DB_URI)
 
 # =================================================
-# CREATE TABLES IN MYSQL DB WITH THE SCHEMA GIVEN
+# CREATE TABLES IN MYSQL DB WITH SCHEMA GIVEN
 # =================================================
 create_tables_sql = """
 CREATE TABLE IF NOT EXISTS customers (
@@ -625,4 +625,5 @@ except Exception as e:
         file.write("Error type: UnexpectedError\n")
         file.write(f"Error message: {str(e)}\n")
         file.write("-" * 40 + "\n")
+
 
