@@ -26,7 +26,7 @@ if (Array.isArray(data)) {
   print("Single document imported into fleximart.products");
 }
 /********************************************
- Operation 2: Basic Query
+ Operation 2: Basic Query 
  // Find all products in "Electronics" category with price less than 50000
 // Return only: name, price, stock
 ********************************************/
@@ -122,4 +122,5 @@ db.products.aggregate([
   {
     $sort: { avg_price: -1 }
   }
+
 ]);
